@@ -1,0 +1,16 @@
+# ignore everything in temp/ folder
+temp/*
+
+# ignore standard python and os temp files
+__py*
+*.db
+.DS_Store
+
+# ignore config.py
+# config.py
+
+# ignore log
+*.log
+
+# ignore pickle
+*.pickle
