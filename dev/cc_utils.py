@@ -1,7 +1,18 @@
+import time
+import datetime
+
 from copy import deepcopy
 
 
 class Utils(object):
+
+    @staticmethod
+    def print_debug(msg, debug=False, debug_level=3):
+        if debug:
+            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
+            time.sleep(0.5)
+
+    @staticmethod
     def RowValidate(row):
         if any(row):
             if '' in row:
