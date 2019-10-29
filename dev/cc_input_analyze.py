@@ -21,10 +21,17 @@ class Analyzer():
         return chiller_definition
 
     @staticmethod
-    def ChillerFromDefinition():
+    def ChillerFromCSV(csv_path):
+        pass
+
+    @staticmethod
+    def ChillerFromDefinition(definition_data):
+        pass
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     chiller_definition = Analyzer.GetChillerDefinition()
-    print(chiller_definition)
+    for i in chiller_definition:
+        print(i)
+    # print(chiller_definition)

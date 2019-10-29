@@ -55,7 +55,7 @@ class BuiltinInputOptions(Enum):
     USER_CHILLER_LIST = 2
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     if Temperature.IS_GOOD:
         print("hi")
