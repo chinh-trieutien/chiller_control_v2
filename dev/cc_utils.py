@@ -3,6 +3,9 @@ import datetime
 
 from copy import deepcopy
 
+debug = True
+debug = False
+
 
 class Utils(object):
 
@@ -21,6 +24,26 @@ class Utils(object):
                 return Row.IS_DATA_ROW
         else:
             return Row.IS_EMPTY
+
+    @staticmethod
+    def TableLevel(table):
+        table_level = 0
+        if type(table) is list:
+            return Utils.TableLevel(table[0]) + 1
+        else:
+            return table_level
+
+    @staticmethod
+    def Interpolate(table=None, params=[]):
+        """
+        two_dim_tabe = [[],[],[]]
+        """
+        if Utils.TableLevel(table) == len(params):
+            Utils.print_debug("Interpolatable", debug=debug)
+        else:
+            Utils.print_debug("Un-Interpolatable", debug=debug)
+
+        pass
 
 
 class Converter:
@@ -108,7 +131,22 @@ class Converter:
 
 if __name__ == "__main__":
 
-    print(Converter.Native(100, "bAse miLli"))
-    print(Converter.Native(100, "bAse kilo"))
-    print(Converter.Native(100, "deci kilo"))
-    print(Converter.Native(100, " kilo deci"))
+    # print(Converter.Native(100, "bAse miLli"))
+    # print(Converter.Native(100, "bAse kilo"))
+    # print(Converter.Native(100, "deci kilo"))
+    # print(Converter.Native(100, " kilo deci"))
+
+    two_dim_tabe = [[[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]]]
+    table_level = Utils.TableLevel(two_dim_tabe)
+    print(table_level)
+    # two_dim_tabe = [[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]]
+    # table_level = Utils.TableLevel(two_dim_tabe)
+    # print(table_level)
+    # two_dim_tabe = [1, 1, 1, 1]
+    # table_level = Utils.TableLevel(two_dim_tabe)
+    # print(table_level)
+    # two_dim_tabe = 1
+    # table_level = Utils.TableLevel(two_dim_tabe)
+    # print(table_level)
+
+    Utils.Interpolate(table=two_dim_tabe, params=[1, 2, 3])
