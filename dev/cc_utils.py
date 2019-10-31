@@ -3,8 +3,11 @@ import datetime
 
 from copy import deepcopy
 
+from cc_enum import InterpolateMode
+from cc_chiller import Table
+
 debug = True
-debug = False
+# debug = False
 
 
 class Utils(object):
@@ -26,20 +29,42 @@ class Utils(object):
             return Row.IS_EMPTY
 
     @staticmethod
-    def TableLevel(table):
-        table_level = 0
-        if type(table) is list:
-            return Utils.TableLevel(table[0]) + 1
+    def Interpolate(table=None, row=None, column=None):
+        if table is Table:
+            interpolatable = False
+            Utils.print_debug(
+                "Table suppose tobe Table object only", debug=debug)
+        elif table.Level != 2:
+            interpolatable = False
+            Utils.print_debug(
+                "Table level have to equal to 2", debug=debug)
+        elif (row is None) & (column is None):
+            interpolatable = False
+            Utils.print_debug(
+                "Nothing to lookup", debug=debug)
+        elif row is None:
+            interpolatable = True
+            interpolate_mode = InterpolateMode.INTERPOLATE_COLUMN
+            Utils.print_debug(
+                "Interpolate all row", debug=debug)
+        elif column is None:
+            interpolatable = True
+            interpolate_mode = InterpolateMode.INTERPOLATE_ROW
+            Utils.print_debug(
+                "Interpolate all column", debug=debug)
+        elif not((row is None) & (column is None)):
+            interpolatable = True
+            interpolate_mode = InterpolateMode.SINGLE_VALUE
+            Utils.print_debug(
+                "Nothing to lookup", debug=debug)
         else:
-            return table_level
+            interpolatable = False
+            Utils.print_debug(
+                "Not implemented case", debug=debug)
 
-    @staticmethod
-    def Interpolate(table=None, params=[]):
-        """
-        two_dim_tabe = [[],[],[]]
-        """
-        if Utils.TableLevel(table) == len(params):
+        if interpolatable:
             Utils.print_debug("Interpolatable", debug=debug)
+            Utils.print_debug(interpolate_mode, debug=debug)
         else:
             Utils.print_debug("Un-Interpolatable", debug=debug)
 
@@ -127,26 +152,3 @@ class Converter:
                     return value / (second_factor / first_factor)
 
         return value
-
-
-if __name__ == "__main__":
-
-    # print(Converter.Native(100, "bAse miLli"))
-    # print(Converter.Native(100, "bAse kilo"))
-    # print(Converter.Native(100, "deci kilo"))
-    # print(Converter.Native(100, " kilo deci"))
-
-    two_dim_tabe = [[[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]]]
-    table_level = Utils.TableLevel(two_dim_tabe)
-    print(table_level)
-    # two_dim_tabe = [[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]]
-    # table_level = Utils.TableLevel(two_dim_tabe)
-    # print(table_level)
-    # two_dim_tabe = [1, 1, 1, 1]
-    # table_level = Utils.TableLevel(two_dim_tabe)
-    # print(table_level)
-    # two_dim_tabe = 1
-    # table_level = Utils.TableLevel(two_dim_tabe)
-    # print(table_level)
-
-    Utils.Interpolate(table=two_dim_tabe, params=[1, 2, 3])

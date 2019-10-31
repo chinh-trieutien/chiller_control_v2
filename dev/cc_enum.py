@@ -23,42 +23,44 @@ COMBINATIONS_PATH = RESOURCE_PATH + "combinations\\"
 # COMBINATIONS_PATH = RESOURCE_PATH + "COMBINATIONS.pickle"
 
 
-class Row(Enum):
-    IS_EMPTY = 0
-    IS_HEADER = 1
-    IS_DATA_ROW = 2
+class DefinitionRowType(Enum):
+    NONE = -1
+    IS_EMPTY = 1
+    IS_HEADER = 2
+    IS_DATA_ROW = 3
 
 
-class Temperature(Enum):
-    IS_GOOD = 0
-    IS_TOOHIGH = 1
-    IS_TOOLOW = 2
+class TemperatureType(Enum):
+    NONE = -1
+    IS_GOOD = 1
+    IS_TOOHIGH = 2
+    IS_TOOLOW = 3
 
 
 class LoadType(Enum):
-    NONE = 0
+    NONE = -1
     LOAD = 1
     TIMELINE = 2
     TEMPERATURE = 3
 
 
 class BuiltinRunOptions(Enum):
-    NEW_CHILLER_DATABASE = 0
-    NEW_LOAD_DATABASE = 1
-    CONSTRAINT_TE = 2
-    CONSTRAINT_TC = 3
+    NONE = -1
+    NEW_CHILLER_DATABASE = 1
+    NEW_LOAD_DATABASE = 2
+    CONSTRAINT_TE = 3
+    CONSTRAINT_TC = 4
 
 
 class BuiltinInputOptions(Enum):
-    DEFAULT_INPUT = 0
-    USER_MODEL = 1
-    USER_CHILLER_LIST = 2
+    NONE = -1
+    DEFAULT_INPUT = 1
+    USER_MODEL = 2
+    USER_CHILLER_LIST = 3
 
 
-if __name__ == '__main__':
-
-    if Temperature.IS_GOOD:
-        print("hi")
-
-    if Temperature.IS_TOOHIGH.value == 1:
-        print("hi")
+class InterpolateMode(Enum):
+    NONE = -1
+    SINGLE_VALUE = 1
+    INTERPOLATE_ROW = 2
+    INTERPOLATE_COLUMN = 3

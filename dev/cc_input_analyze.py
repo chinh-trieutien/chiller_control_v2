@@ -1,11 +1,12 @@
 import os
 import os.path as op
 
+import csv
+
 from cc_enum import CATALOGUE_PATH
 
-from cc_chiller import Chiller
-from cc_utils import Utils
-from cc_utils import Converter
+from cc_chiller import Chiller, Table
+from cc_utils import Utils, Converter
 
 
 class Analyzer():
@@ -21,17 +22,26 @@ class Analyzer():
         return chiller_definition
 
     @staticmethod
-    def ChillerFromCSV(csv_path):
+    def TableFromCSV(csv_path):
         pass
 
     @staticmethod
-    def ChillerFromDefinition(definition_data):
-        pass
+    def TableFromDefinition(definition_data):
+        data = {
+            "row": [],
+            "column": [],
+            "data": [],
+        }
+
+        return Table(data)
 
 
 if __name__ == '__main__':
 
     chiller_definition = Analyzer.GetChillerDefinition()
-    for i in chiller_definition:
-        print(i)
-    # print(chiller_definition)
+    for definition_data in chiller_definition:
+        print(definition_data)
+
+    table = Analyzer.TableFromDefinition(definition_data)
+
+    print(table)
