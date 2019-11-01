@@ -28,8 +28,8 @@ class Analyzer():
     @staticmethod
     def TableFromDefinition(definition_data):
         data = {
-            "row": [],
-            "column": [],
+            "row_header": [],
+            "column_header": [],
             "data": [],
         }
 
