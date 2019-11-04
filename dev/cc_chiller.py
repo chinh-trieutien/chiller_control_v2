@@ -36,7 +36,6 @@ class Cell(object):
 class Row(object):
     def __init__(self):
         self.index = 0
-        self.header = 0
         self.count = 0
         self.cells = []
 
@@ -56,13 +55,35 @@ class Table(object):
         self.table = []
         self.row_count = 0
         self.col_count = 0
+        self.row_header = []
+        self.col_header = []
         self.TableFromData()
+        # self
 
     @property
     def Level(self):
         return self.level
 
+    @property
+    def RowHeaderMin(self):
+        return min(self.row_header)
+
+    @property
+    def RowHeaderMax(self):
+        return max(self.row_header)
+
+    @property
+    def ColumnHeaderMin(self):
+        return min(self.col_header)
+
+    @property
+    def ColumnHeaderMax(self):
+        return max(self.col_header)
+
     def TableFromData(self):
+
+        self.row_header = self.data["row_header"]
+        self.col_header = self.data["column_header"]
 
         row_indx = 0
         for row_data in self.data["data"]:
@@ -94,10 +115,9 @@ class Table(object):
                     row.AddCell(Cell.Null(row.index, row.count + 1))
 
     def AddRow(self, row):
-        self.table
-
         row.index = self.row_count
-        row.header = self.data
+
+        self.table.append(row)
 
         self.row_count += 1
 
