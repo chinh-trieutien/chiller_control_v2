@@ -12,63 +12,104 @@ debug = True
 
 class Utils(object):
 
-    @staticmethod
-    def print_debug(msg, debug=False, debug_level=3):
-        if debug:
-            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
-            time.sleep(0.5)
+    class Common():
+        @staticmethod
+        def print_debug(msg, debug=False, debug_level=3):
+            if debug:
+                print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
+                time.sleep(0.5)
 
-    @staticmethod
-    def RowValidate(row):
-        if any(row):
-            if '' in row:
-                return Row.IS_HEADER
+        @staticmethod
+        def RowValidate(row):
+            if any(row):
+                if '' in row:
+                    return Row.IS_HEADER
+                else:
+                    return Row.IS_DATA_ROW
             else:
-                return Row.IS_DATA_ROW
-        else:
-            return Row.IS_EMPTY
+                return Row.IS_EMPTY
 
-    @staticmethod
-    def Interpolate(table=None, row=None, column=None):
-        if table is Table:
-            interpolatable = False
-            Utils.print_debug(
-                "Table suppose tobe Table object only", debug=debug)
-        elif table.Level != 2:
-            interpolatable = False
-            Utils.print_debug(
-                "Table level have to equal to 2", debug=debug)
-        elif (row is None) & (column is None):
-            interpolatable = False
-            Utils.print_debug(
-                "Nothing to lookup", debug=debug)
-        elif row is None:
-            interpolatable = True
-            interpolate_mode = InterpolateMode.INTERPOLATE_COLUMN
-            Utils.print_debug(
-                "Interpolate all row", debug=debug)
-        elif column is None:
-            interpolatable = True
-            interpolate_mode = InterpolateMode.INTERPOLATE_ROW
-            Utils.print_debug(
-                "Interpolate all column", debug=debug)
-        elif not((row is None) & (column is None)):
-            interpolatable = True
-            interpolate_mode = InterpolateMode.SINGLE_VALUE
-            Utils.print_debug(
-                "Nothing to lookup", debug=debug)
-        else:
-            interpolatable = False
-            Utils.print_debug(
-                "Not implemented case", debug=debug)
+    # @staticmethod
+    class Interpolate():
 
-        if interpolatable:
-            Utils.print_debug("Interpolatable", debug=debug)
-            Utils.print_debug(interpolate_mode, debug=debug)
-        else:
-            Utils.print_debug("Un-Interpolatable", debug=debug)
+        @staticmethod
+        def RowValidate(table=None, row=None):
+            if row >= table.RowHeaderMin and row <= table.RowHeaderMax:
+                return True
+            else:
+                return False
 
-        pass
+        @staticmethod
+        def ColumnValidate(table=None, column=None):
+            if column >= table.ColumnHeaderMin and column <= table.ColumnHeaderMax:
+                return True
+            else:
+                return False
+
+        @staticmethod
+        def TableValidate(table=None, row=None, column=None):
+            if table is Table:
+                interpolatable = False
+                Utils.Common.print_debug(
+                    "Table suppose tobe Table object only", debug=debug)
+            elif table.Level != 2:
+                interpolatable = False
+                Utils.Common.print_debug(
+                    "Table level have to equal to 2", debug=debug)
+            elif (row is None) & (column is None):
+                interpolatable = False
+                Utils.Common.print_debug(
+                    "Nothing to lookup", debug=debug)
+            elif row is None:
+                if Utils.Interpolate.ColumnValidate(table=table, column=column):
+                    interpolatable = True
+                    interpolate_mode = InterpolateMode.INTERPOLATE_COLUMN
+                    Utils.Common.print_debug(
+                        "Interpolate all col_{}".format(column), debug=debug)
+                else:
+                    interpolatable = False
+                    Utils.Common.print_debug(
+                        "Chosen column out of range: col_{}".format(column), debug=debug)
+
+            elif column is None:
+                if Utils.Interpolate.RowValidate(table=table, row=row):
+                    interpolatable = True
+                    interpolate_mode = InterpolateMode.INTERPOLATE_ROW
+                    Utils.Common.print_debug(
+                        "Interpolate all row_{}".format(row), debug=debug)
+                else:
+                    interpolatable = False
+                    Utils.Common.print_debug(
+                        "Chosen row out of range: row_{}".format(row), debug=debug)
+            elif not((row is None) & (column is None)):
+                interpolatable = True
+                if not (Utils.Interpolate.ColumnValidate(table=table, column=column)):
+                    interpolatable = False
+                    Utils.Common.print_debug(
+                        "Chosen column out of range: col_{}".format(column), debug=debug)
+
+                if not(Utils.Interpolate.RowValidate(table=table, row=row)):
+                    interpolatable = False
+                    Utils.Common.print_debug(
+                        "Chosen row out of range: row_{}".format(row), debug=debug)
+
+                if interpolatable:
+                    interpolate_mode = InterpolateMode.SINGLE_VALUE
+                    Utils.Common.print_debug(
+                        "Interpolate for row_{}, col_{}".format(row, column), debug=debug)
+
+            else:
+                interpolatable = False
+                Utils.Common.print_debug(
+                    "Not implemented case", debug=debug)
+
+            if interpolatable:
+                Utils.Common.print_debug("Interpolatable", debug=debug)
+                Utils.Common.print_debug(interpolate_mode, debug=debug)
+            else:
+                Utils.Common.print_debug("Un-Interpolatable", debug=debug)
+
+            pass
 
 
 class Converter:
