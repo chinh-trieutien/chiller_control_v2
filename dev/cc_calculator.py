@@ -67,6 +67,21 @@ class Calculator():
 
     def Run(self):
         Utils.Common.print_debug("Run Calculation", debug=debug)
+        result = Result()
+
+        """
+        Start calculation here
+        """
+
+        """
+        Calculation end here
+        """
+
+        return result
+
+
+class Result():
+    def __init__(self):
         pass
 
 
@@ -97,4 +112,6 @@ if __name__ == '__main__':
     calc.RunOptions = runOpts
     calc.Input = inputs
 
-    calc.Run()
+    result = calc.Run()
+
+    print(result)

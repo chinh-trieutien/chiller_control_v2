@@ -16,7 +16,8 @@ class Utils(object):
         @staticmethod
         def print_debug(msg, debug=False, debug_level=3):
             if debug:
-                print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
+                print(datetime.datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"), msg)
                 time.sleep(0.5)
 
         @staticmethod
@@ -83,15 +84,15 @@ class Utils(object):
                         "Chosen row out of range: row_{}".format(row), debug=debug)
             elif not((row is None) & (column is None)):
                 interpolatable = True
-                if not (Utils.Interpolate.ColumnValidate(table=table, column=column)):
-                    interpolatable = False
-                    Utils.Common.print_debug(
-                        "Chosen column out of range: col_{}".format(column), debug=debug)
-
                 if not(Utils.Interpolate.RowValidate(table=table, row=row)):
                     interpolatable = False
                     Utils.Common.print_debug(
                         "Chosen row out of range: row_{}".format(row), debug=debug)
+
+                if not (Utils.Interpolate.ColumnValidate(table=table, column=column)):
+                    interpolatable = False
+                    Utils.Common.print_debug(
+                        "Chosen column out of range: col_{}".format(column), debug=debug)
 
                 if interpolatable:
                     interpolate_mode = InterpolateMode.SINGLE_VALUE
